@@ -1,0 +1,5 @@
+#ignored git files
+*.[oa]
+*~
+bin/
+required_libs/
