@@ -126,7 +126,7 @@ void Render(obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	glUniformMatrix4fv( projMatrixLoc, 1, 0, matProj );
 
 	//Renders the car
-    aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    	aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
 	recursive_render(id, assets[0].scene->mRootNode, assets[0]);
    
 	// swap buffers
@@ -184,7 +184,7 @@ int main(int argc, char** argv)
 	shaderInit(g_hPShaderProgram, assets[0]);
 
 	//loadAsset("models/jeep1.3ds", assets[0]);
-    loadAsset("models/porsche82.3ds", assets[0]);		
+    	loadAsset("models/porsche82.3ds", assets[0]);		
 
 	if (!assets[0].scene)
 	{
@@ -222,7 +222,7 @@ int main(int argc, char** argv)
 	RenderCleanup(assets);
 	
 	// cleanup
-    killTouch();
+    	killTouch();
 	DestroyShaders();
 	EGLdeinit(eglDisplay);
 

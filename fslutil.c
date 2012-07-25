@@ -1047,6 +1047,7 @@ GLuint CreateStaticCubemap()
 {
 	ILboolean success;
 	char texName[] = "cm/1.jpg";
+	ILenum errorEnum;
 
 	/* create and fill array with DevIL texture ids */
 	ILuint* imageIds = new ILuint[6];
@@ -1054,7 +1055,7 @@ GLuint CreateStaticCubemap()
 
 	/* create and fill array with GL texture ids */
 	GLuint textureObject;
-    glGenTextures(1, &textureObject);
+    	glGenTextures(1, &textureObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureObject);
 	/* get iterator */
 
@@ -1064,6 +1065,8 @@ GLuint CreateStaticCubemap()
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
+		errorEnum = ilGetError();
+		if (errorEnum!=0) printf("errorEnum pre ilLoadImage: %i\n", errorEnum);
 		success = ilLoadImage((ILstring)texName);
 		
 		if (success) {
@@ -1078,8 +1081,11 @@ GLuint CreateStaticCubemap()
 			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
 		}
-		else 
-			printf("Couldn't load cubemap\n");
+		else {
+			errorEnum = ilGetError();
+			printf("errorEnum ilLoadImage: %i\n", errorEnum);
+			printf("Couldn't load cubemap.\n");
+		}
 	}
 	/* Because we have already copied image data into texture data
 	we can release memory used by image. */

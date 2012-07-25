@@ -1,10 +1,10 @@
 
 #----------------- development environment here
 #important so we know where the libraries are
-LTIB_ROOTFS=/home/server/ltib/11.09/ltib/rootfs
+LTIB_ROOTFS=/home/fsl/12.04/ltib/rootfs
 
 #set CROSS_COMPILE as below
-CROSS_COMPILE = /opt/freescale/usr/local/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin/arm-fsl-linux-gnueabi-
+CROSS_COMPILE = /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-
 
 #extra headers
 EXTRA_INC =  $(LTIB_ROOTFS)/usr/include
