@@ -298,6 +298,7 @@ fslBool fslEGLCheck( fslBool bExitOnFailure)
 				break;
 				default:
 						fprintf(stdout, "EGL Fail = 0x%x \n", eglerr);
+						break;
 			}
 
 			if (bExitOnFailure)
@@ -1050,7 +1051,7 @@ GLuint CreateStaticCubemap()
 	ILenum errorEnum;
 
 	/* create and fill array with DevIL texture ids */
-	ILuint* imageIds = new ILuint[6];
+	ILuint imageIds[6];
 	ilGenImages(6, imageIds); 
 
 	/* create and fill array with GL texture ids */
@@ -1092,7 +1093,7 @@ GLuint CreateStaticCubemap()
 	ilDeleteImages(6, imageIds); 
 
 	//Cleanup
-	delete [] imageIds;
+	//delete [] imageIds;
 	return textureObject;
 }
 
@@ -1102,7 +1103,7 @@ GLuint CreateDynamicCubemap()
 	char texName[] = "cm/1.jpg";
 
 	/* create and fill array with DevIL texture ids */
-	ILuint* imageIds = new ILuint[6];
+	ILuint imageIds[6];
 	ilGenImages(6, imageIds); 
 
 	/* create and fill array with GL texture ids */
@@ -1139,7 +1140,6 @@ GLuint CreateDynamicCubemap()
 	ilDeleteImages(6, imageIds); 
 
 	//Cleanup
-	delete [] imageIds;
 	return textureObject;
 }
 

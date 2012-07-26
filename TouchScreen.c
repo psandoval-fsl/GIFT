@@ -63,7 +63,7 @@ void killTouch(void){
 
 int updateTouch(void){
 	int amount;
-	int i;
+	unsigned int i;
 	//fseek(tsDev, 0, SEEK_END);
 	amount = read(tsDev, devData, sizeof(struct input_event) * 11);	
 	if (amount < (int) sizeof(struct input_event)) {
