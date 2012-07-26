@@ -50,7 +50,7 @@ GLuint sbVBO[2];
 
 int preRender()
 {
-	
+
 	// load and compiler vertex/fragment shaders.
 	LoadShaders("shaders/vs_phong.vert", "shaders/fs_phong.frag", g_hPShaderProgram);
 	LoadShaders("shaders/vs_skybox.vert", "shaders/fs_skybox.frag", g_hSBShaderProgram);
@@ -106,12 +106,14 @@ void Render(obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	float matModelView[16] = {0};
 	fslLoadIdentityMatrix4x4 (matModelView);
 	
-	// Build a perspective projection matrix. You should consider using ortho instead of perspective for clusters.
+	// Build a perspective projection matrix. You should consider using ortho
+	//instead of perspective for clusters.
 	float matProj[16] = {0};
 	fslPerspectiveMatrix4x4 ( matProj, 70.f, 1.3333f, 0.1f, 200.f);
 	fslRotateMatrix4x4(matModelView, 180, FSL_Z_AXIS);
 	
-	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc, matModelView, matProj, sbPosLoc, sbVBO);
+	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc,
+			matModelView, matProj, sbPosLoc, sbVBO);
 
 	fslLoadIdentityMatrix4x4 (matModelView);
 	fslTranslateMatrix4x4 (matModelView, 0, -2, -10);
@@ -159,8 +161,8 @@ void DestroyShaders()
 	glUseProgram(0);
 }
 
-/***************************************************************************************
-***************************************************************************************/
+/*******************************************************************************
+********************************************************************************/
 
 // Program entry.
 int main(int argc, char** argv)
