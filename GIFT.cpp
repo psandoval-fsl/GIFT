@@ -52,9 +52,9 @@ int preRender()
 {
 
 	// load and compiler vertex/fragment shaders.
-	LoadShaders("shaders/vs_phong.vert", "shaders/fs_phong.frag", g_hPShaderProgram);
-	LoadShaders("shaders/vs_skybox.vert", "shaders/fs_skybox.frag", g_hSBShaderProgram);
-	LoadShaders("shaders/vs_texture.vert", "shaders/fs_texture.frag", g_hTXShaderProgram );
+	LoadShaders("resources/shaders/vs_phong.vert", "resources/shaders/fs_phong.frag", g_hPShaderProgram);
+	LoadShaders("resources/shaders/vs_skybox.vert", "resources/shaders/fs_skybox.frag", g_hSBShaderProgram);
+	LoadShaders("resources/shaders/vs_texture.vert", "resources/shaders/fs_texture.frag", g_hTXShaderProgram );
 
 	//init assImp stream
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
@@ -185,8 +185,8 @@ int main(int argc, char** argv)
 
 	shaderInit(g_hPShaderProgram, assets[0]);
 
-	//loadAsset("models/jeep1.3ds", assets[0]);
-    	loadAsset("models/porsche82.3ds", assets[0]);		
+	//loadAsset("resources/models/jeep1.3ds", assets[0]);
+    	loadAsset("resources/models/porsche82.3ds", assets[0]);
 
 	if (!assets[0].scene)
 	{

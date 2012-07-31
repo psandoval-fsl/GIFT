@@ -1047,7 +1047,7 @@ void EGLdeinit(EGLDisplay &eglDisplay)
 GLuint CreateStaticCubemap()
 {
 	ILboolean success;
-	char texName[] = "cm/1.jpg";
+	char texName[] = "resources/cm/1.jpg";
 	ILenum errorEnum;
 
 	/* create and fill array with DevIL texture ids */
@@ -1062,7 +1062,7 @@ GLuint CreateStaticCubemap()
 
 	for (int i =0; i < 6 ; ++i)
 	{
-		texName[3] = i+49;
+		texName[13] = i+49;
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
@@ -1100,7 +1100,7 @@ GLuint CreateStaticCubemap()
 GLuint CreateDynamicCubemap()
 {
 	ILboolean success;
-	char texName[] = "cm/1.jpg";
+	char texName[] = "resources/cm/1.jpg";
 
 	/* create and fill array with DevIL texture ids */
 	ILuint imageIds[6];
@@ -1114,7 +1114,7 @@ GLuint CreateDynamicCubemap()
 
 	for (int i =0; i < 6 ; ++i)
 	{
-		texName[3] = i+49;
+		texName[13] = i+49;
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
