@@ -3,3 +3,5 @@
 *~
 bin/
 required_libs/
+resources/cm
+resources/models
