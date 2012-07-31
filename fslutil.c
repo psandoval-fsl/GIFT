@@ -911,7 +911,6 @@ int CompileShader(const char * FName, GLuint ShaderNum)
 	return 1;
 }
 
-// links vertex and fragment shader then links a shader program
 void LoadShaders(const char * vShaderFName, const char * pShaderFName, GLuint & g_hShaderProgram)
 {
 	GLuint vertShaderNum = glCreateShader(GL_VERTEX_SHADER);
@@ -962,8 +961,7 @@ void LoadShaders(const char * vShaderFName, const char * pShaderFName, GLuint & 
 }
 
 //vanilla egl initialization stuff
-int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface)
-{
+int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface) {
    EGLContext		eglContext;
    NativeDisplayType 	display;
    NativeWindowType 	window;
