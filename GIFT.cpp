@@ -97,7 +97,7 @@ int preRender()
 }
 
 // sets matrices, renders objects
-void Render(obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
+void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 {
 	// Clear background.
 	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
@@ -128,15 +128,15 @@ void Render(obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	glUniformMatrix4fv( projMatrixLoc, 1, 0, matProj );
 
 	//Renders the car
-    	aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-	recursive_render(id, assets[0].scene->mRootNode, assets[0]);
+    aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+	assets[0].recursive_render(id, assets[0].getScene()->mRootNode, assets[0]);
    
 	// swap buffers
 	glFlush();
 	
 }
 
-void RenderCleanup(obj3d *assets)
+void RenderCleanup(Obj3d *assets)
 {
 	// Clear background.
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -144,7 +144,7 @@ void RenderCleanup(obj3d *assets)
    	eglSwapBuffers(eglDisplay, eglSurface);
 	
 	// free assImp scene resources
-	aiReleaseImport(assets[0].scene);
+	aiReleaseImport(assets[0].getScene());
 
 	// detach assImp log
 	aiDetachAllLogStreams();
@@ -173,7 +173,7 @@ int main(int argc, char** argv)
 	unsigned int fpsEnd = 0;
 	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	obj3d assets[1];
+	Obj3d assets[1];
 
 	EGLinit(eglDisplay, eglSurface);
 
@@ -182,20 +182,20 @@ int main(int argc, char** argv)
 		EGLdeinit(eglDisplay);
 		return 1;
 	}
+	assets[0].shaderInit(g_hPShaderProgram, assets[0]);
 
-	shaderInit(g_hPShaderProgram, assets[0]);
+	assets[0].loadAsset("resources/models/jeep1.3ds", assets[0]);
+    //assets[0].loadAsset("resources/models/porsche82.3ds", assets[0]);
+    //assets[0].loadAsset("resources/models/camaro_2006.3ds", assets[0]);
 
-	//loadAsset("resources/models/jeep1.3ds", assets[0]);
-    	loadAsset("resources/models/porsche82.3ds", assets[0]);
-
-	if (!assets[0].scene)
+    if(!assets[0].getScene())
 	{
 		printf("scene could not be loaded\n");	
 		return 1;
 	}
 	printf("scene loaded\n");
-	assets[0].cubeHandle = CreateStaticCubemap();
-	sbTxHandle = assets[0].cubeHandle;
+	assets[0].setCubeHandle(CreateStaticCubemap());
+	sbTxHandle = assets[0].getCubeHandle();
 
 	// Main loop
 	//for (int x = 0;x<1;x++) 

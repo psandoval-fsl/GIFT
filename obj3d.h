@@ -33,7 +33,12 @@ struct MyMesh{
 	int numFaces;
 };
 
-struct obj3d{
+enum vboNames { VBO_faces,
+				VBO_vertices,
+				VBO_normals,
+				VBO_texCoords
+				};
+class Obj3d{
 
 	std::vector<struct MyMesh> myMeshes;
 	std::map<std::string, GLuint> textureIdMap;	
@@ -52,18 +57,17 @@ struct obj3d{
 
 	GLuint texUnitLoc;
 	GLuint cubeHandle;
+
+	public:
+	const struct aiScene * getScene(void){return scene;};
+	GLuint getCubeHandle(void){return cubeHandle;};
+	void setCubeHandle(GLuint handle){cubeHandle = handle;};
+	void set_float4(float f[4], float a, float b, float c, float d);
+	void color4_to_float4(const struct aiColor4D *c, float f[4]);
+	void loadAsset(const char * path, Obj3d &asset);
+	void shaderInit(GLuint &shaderProgram, Obj3d &asset);
+	void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset);
+	int LoadGLTextures(const aiScene* scene, Obj3d &asset);
+
+
 };
-
-enum vboNames { VBO_faces,
-				VBO_vertices,
-				VBO_normals,
-				VBO_texCoords
-				};
-
-void set_float4(float f[4], float a, float b, float c, float d);
-void color4_to_float4(const struct aiColor4D *c, float f[4]);
-void loadAsset(const char * path, obj3d &asset);
-void shaderInit(GLuint &shaderProgram, obj3d &asset);
-void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, obj3d &asset);
-int LoadGLTextures(const aiScene* scene, obj3d &asset);
-

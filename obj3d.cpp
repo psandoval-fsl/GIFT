@@ -1,6 +1,6 @@
 #include "obj3d.h"
 
-void set_float4(float f[4], float a, float b, float c, float d)
+void Obj3d::set_float4(float f[4], float a, float b, float c, float d)
 {
 	f[0] = a;
 	f[1] = b;
@@ -8,7 +8,7 @@ void set_float4(float f[4], float a, float b, float c, float d)
 	f[3] = d;
 }
 
-void color4_to_float4(const struct aiColor4D *c, float f[4])
+void Obj3d::color4_to_float4(const struct aiColor4D *c, float f[4])
 {
 	f[0] = c->r;
 	f[1] = c->g;
@@ -16,7 +16,7 @@ void color4_to_float4(const struct aiColor4D *c, float f[4])
 	f[3] = c->a;
 }
 
-int LoadGLTextures(const aiScene* scene, obj3d &asset)
+int Obj3d::LoadGLTextures(const aiScene* scene, Obj3d &asset)
 {
 	ILboolean success;
 
@@ -71,6 +71,7 @@ int LoadGLTextures(const aiScene* scene, obj3d &asset)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),
 				ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				ilGetData()); 
+			printf("Image loaded: %s, %i out of %i textures\n", filename.c_str(), numTextures, i);
 		}
 		else 
 			printf("Couldn't load Image: %s\n", filename.c_str());
@@ -90,7 +91,7 @@ int LoadGLTextures(const aiScene* scene, obj3d &asset)
 /***************************************************************************************
 * loads asset
 ***************************************************************************************/
-void loadAsset(const char * path, obj3d &asset)
+void Obj3d::loadAsset(const char * path, Obj3d &asset)
 {
 	asset.scene = aiImportFile(path,aiProcessPreset_TargetRealtime_Quality);
 	if (asset.scene)
@@ -221,7 +222,7 @@ void loadAsset(const char * path, obj3d &asset)
 * inits render
 ***************************************************************************************/
 
-void shaderInit(GLuint &shaderProgram, obj3d &asset)
+void Obj3d::shaderInit(GLuint &shaderProgram, Obj3d &asset)
 {
 	// Grab location of shader attributes.
 	asset.vertexLoc = glGetAttribLocation(shaderProgram , "position");
@@ -247,7 +248,7 @@ void shaderInit(GLuint &shaderProgram, obj3d &asset)
 * renders recusrively
 ***************************************************************************************/
 
-void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, obj3d &asset)
+void Obj3d::recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset)
 {
 	// Get node transformation matrix
 	struct aiMatrix4x4 m = nd->mTransformation;
