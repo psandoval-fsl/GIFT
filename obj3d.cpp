@@ -1,6 +1,31 @@
 #include "obj3d.h"
 
-Obj3d::Obj3d(GLuint shaderPrg, const char * path, Obj3d &obj){
+Obj3d::Obj3d(bool hasTx){
+	vertexLoc = 0;
+	normalLoc = 0;
+	texCoordLoc = 0;
+
+	hasTx?hasTextures=1:hasTextures=0;
+
+		// proj, modelview matrices are uniforms
+	modelMatrixLoc= 0;
+
+		//get uniform locations for frag shader material stuff
+	diffuseLoc = 0;
+	ambientLoc = 0;
+	specularLoc = 0;
+	emissiveLoc = 0;
+	shininessLoc = 0;
+	texUnitLoc = 0;
+
+	shaderProg = 0;
+
+	cubeHandle = 0;
+	scene = 0;
+	texCountLoc = 0;
+}
+
+void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 	// Grab location of shader attributes.
 	vertexLoc = glGetAttribLocation(shaderPrg , "position");
 	normalLoc = glGetAttribLocation(shaderPrg , "normal");
@@ -129,9 +154,10 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 		struct MyMesh aMesh;
 		struct MyMaterial aMat; 
 		unsigned short shortFaces[3];
-		printf("pre load textures\n");
-		LoadGLTextures(asset.scene, asset);
-		printf("post load textures\n");
+		if(hasTextures){
+			printf("habemus textureas!\n");
+			LoadGLTextures(asset.scene, asset);
+		}
 		// For each mesh
 		for (unsigned int n = 0; n < asset.scene->mNumMeshes; ++n)
 		{
@@ -247,34 +273,6 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 	{
 		printf ("could not load model. misstype?\n");
 	}
-}
-
-/***************************************************************************************
-* inits render
-***************************************************************************************/
-
-void Obj3d::shaderInit(GLuint &shaderProgram, Obj3d &asset)
-{
-	// Grab location of shader attributes.
-	asset.vertexLoc = glGetAttribLocation(shaderProgram , "position");
-	asset.normalLoc = glGetAttribLocation(shaderProgram , "normal"); 
-	asset.texCoordLoc = glGetAttribLocation(shaderProgram , "texCoord"); 
-	
-	// proj, modelview matrices are uniforms
-	asset.modelMatrixLoc= glGetUniformLocation(shaderProgram, "modelMatrix");
-	
-	//get uniform locations for frag shader material stuff
-	asset.diffuseLoc = glGetUniformLocation(shaderProgram, "diffuse");
-	asset.ambientLoc = glGetUniformLocation(shaderProgram, "ambient");
-	asset.specularLoc = glGetUniformLocation(shaderProgram, "specular");
-	asset.emissiveLoc = glGetUniformLocation(shaderProgram, "emissive");
-	asset.shininessLoc = glGetUniformLocation(shaderProgram, "shininess");
-	asset.texUnitLoc = glGetUniformLocation(shaderProgram, "texUnit");
-
-	shaderProg = shaderProgram;
-
-	glEnable( GL_CULL_FACE );
-	glEnable(GL_DEPTH_TEST);
 }
 
 /***************************************************************************************

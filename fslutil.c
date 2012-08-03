@@ -1054,7 +1054,7 @@ GLuint CreateStaticCubemap()
 
 	/* create and fill array with GL texture ids */
 	GLuint textureObject;
-    	glGenTextures(1, &textureObject);
+    glGenTextures(1, &textureObject);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureObject);
 	/* get iterator */
 
@@ -1064,8 +1064,7 @@ GLuint CreateStaticCubemap()
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
-		errorEnum = ilGetError();
-		if (errorEnum!=0) printf("errorEnum pre ilLoadImage: %i\n", errorEnum);
+
 		success = ilLoadImage((ILstring)texName);
 		
 		if (success) {

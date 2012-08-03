@@ -48,6 +48,8 @@ class Obj3d{
 	GLuint normalLoc;
 	GLuint texCoordLoc;
 
+	bool hasTextures;
+
 	GLuint diffuseLoc;
 	GLuint ambientLoc;
 	GLuint specularLoc;
@@ -60,9 +62,12 @@ class Obj3d{
 
 	GLuint shaderProg;
 
+	void loadAsset(const char * path, Obj3d &asset);
+
 	public:
 
-	Obj3d(GLuint shaderPrg, const char * path, Obj3d &obj);
+	Obj3d(bool HasTx);
+	void start(GLuint shaderPrg, const char * path, Obj3d &obj);
 
 	const struct aiScene * getScene(void){return scene;};
 	GLuint getCubeHandle(void){return cubeHandle;};
@@ -71,8 +76,7 @@ class Obj3d{
 	void set_float4(float f[4], float a, float b, float c, float d);
 
 	void color4_to_float4(const struct aiColor4D *c, float f[4]);
-	void loadAsset(const char * path, Obj3d &asset);
-	void shaderInit(GLuint &shaderProgram, Obj3d &asset);
+
 	void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset);
 	int LoadGLTextures(const aiScene* scene, Obj3d &asset);
 
