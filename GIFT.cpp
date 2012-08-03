@@ -183,10 +183,10 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	assets = new Obj3d(g_hTXShaderProgram);
+	assets = new Obj3d(g_hTXShaderProgram, "resources/models/jeep1.3ds", *assets);
 	//assets[0].shaderInit(g_hTXShaderProgram, assets[0]);
 
-	assets->loadAsset("resources/models/jeep1.3ds", *assets);
+	//assets->loadAsset("resources/models/jeep1.3ds", *assets);
     //assets[0].loadAsset("resources/models/porsche82.3ds", assets[0]);
     //assets[0].loadAsset("resources/models/camaro_2006.3ds", assets[0]);
 

@@ -62,7 +62,7 @@ class Obj3d{
 
 	public:
 
-	Obj3d(GLuint shaderPrg);
+	Obj3d(GLuint shaderPrg, const char * path, Obj3d &obj);
 
 	const struct aiScene * getScene(void){return scene;};
 	GLuint getCubeHandle(void){return cubeHandle;};

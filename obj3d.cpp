@@ -1,7 +1,6 @@
 #include "obj3d.h"
 
-Obj3d::Obj3d(GLuint shaderPrg){
-
+Obj3d::Obj3d(GLuint shaderPrg, const char * path, Obj3d &obj){
 	// Grab location of shader attributes.
 	vertexLoc = glGetAttribLocation(shaderPrg , "position");
 	normalLoc = glGetAttribLocation(shaderPrg , "normal");
@@ -23,6 +22,8 @@ Obj3d::Obj3d(GLuint shaderPrg){
 	cubeHandle = 0;
 	scene = 0;
 	texCountLoc = 0;
+
+	loadAsset(path, obj);
 
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
