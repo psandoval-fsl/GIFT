@@ -123,13 +123,13 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
 	fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
 	
-	glUseProgram(g_hPShaderProgram);
+	glUseProgram(assets->getShaderProgram());
 	glUniformMatrix4fv( viewMatrixLoc, 1, 0, matModelView );
 	glUniformMatrix4fv( projMatrixLoc, 1, 0, matProj );
 
 	//Renders the car
     aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-	assets[0].recursive_render(id, assets[0].getScene()->mRootNode, assets[0]);
+	assets->recursive_render(id, assets->getScene()->mRootNode, *assets);
    
 	// swap buffers
 	glFlush();
@@ -144,7 +144,7 @@ void RenderCleanup(Obj3d *assets)
    	eglSwapBuffers(eglDisplay, eglSurface);
 	
 	// free assImp scene resources
-	aiReleaseImport(assets[0].getScene());
+	aiReleaseImport(assets->getScene());
 
 	// detach assImp log
 	aiDetachAllLogStreams();
@@ -173,7 +173,7 @@ int main(int argc, char** argv)
 	unsigned int fpsEnd = 0;
 	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	Obj3d assets[1];
+	Obj3d * assets;
 
 	EGLinit(eglDisplay, eglSurface);
 
@@ -182,20 +182,22 @@ int main(int argc, char** argv)
 		EGLdeinit(eglDisplay);
 		return 1;
 	}
-	assets[0].shaderInit(g_hPShaderProgram, assets[0]);
 
-	assets[0].loadAsset("resources/models/jeep1.3ds", assets[0]);
+	assets = new Obj3d(g_hTXShaderProgram);
+	//assets[0].shaderInit(g_hTXShaderProgram, assets[0]);
+
+	assets->loadAsset("resources/models/jeep1.3ds", *assets);
     //assets[0].loadAsset("resources/models/porsche82.3ds", assets[0]);
     //assets[0].loadAsset("resources/models/camaro_2006.3ds", assets[0]);
 
-    if(!assets[0].getScene())
+    if(!assets->getScene())
 	{
 		printf("scene could not be loaded\n");	
 		return 1;
 	}
 	printf("scene loaded\n");
-	assets[0].setCubeHandle(CreateStaticCubemap());
-	sbTxHandle = assets[0].getCubeHandle();
+	assets->setCubeHandle(CreateStaticCubemap());
+	sbTxHandle = assets->getCubeHandle();
 
 	// Main loop
 	//for (int x = 0;x<1;x++) 
@@ -224,7 +226,7 @@ int main(int argc, char** argv)
 	RenderCleanup(assets);
 	
 	// cleanup
-    	killTouch();
+    killTouch();
 	DestroyShaders();
 	EGLdeinit(eglDisplay);
 

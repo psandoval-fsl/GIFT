@@ -1,5 +1,33 @@
 #include "obj3d.h"
 
+Obj3d::Obj3d(GLuint shaderPrg){
+
+	// Grab location of shader attributes.
+	vertexLoc = glGetAttribLocation(shaderPrg , "position");
+	normalLoc = glGetAttribLocation(shaderPrg , "normal");
+	texCoordLoc = glGetAttribLocation(shaderPrg , "texCoord");
+
+	// proj, modelview matrices are uniforms
+	modelMatrixLoc= glGetUniformLocation(shaderPrg, "modelMatrix");
+
+	//get uniform locations for frag shader material stuff
+	diffuseLoc = glGetUniformLocation(shaderPrg, "diffuse");
+	ambientLoc = glGetUniformLocation(shaderPrg, "ambient");
+	specularLoc = glGetUniformLocation(shaderPrg, "specular");
+	emissiveLoc = glGetUniformLocation(shaderPrg, "emissive");
+	shininessLoc = glGetUniformLocation(shaderPrg, "shininess");
+	texUnitLoc = glGetUniformLocation(shaderPrg, "texUnit");
+
+	shaderProg = shaderPrg;
+
+	cubeHandle = 0;
+	scene = 0;
+	texCountLoc = 0;
+
+	glEnable( GL_CULL_FACE );
+	glEnable(GL_DEPTH_TEST);
+}
+
 void Obj3d::set_float4(float f[4], float a, float b, float c, float d)
 {
 	f[0] = a;
@@ -99,8 +127,10 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 		
 		struct MyMesh aMesh;
 		struct MyMaterial aMat; 
-		unsigned short shortFaces[3];	
-	
+		unsigned short shortFaces[3];
+		printf("pre load textures\n");
+		LoadGLTextures(asset.scene, asset);
+		printf("post load textures\n");
 		// For each mesh
 		for (unsigned int n = 0; n < asset.scene->mNumMeshes; ++n)
 		{
@@ -158,7 +188,7 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float)*2*mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
 				
 				free(texCoords);
-				LoadGLTextures(asset.scene, asset);
+
 			} else {
 				glGenBuffers(1, &aMesh.VBO[VBO_texCoords]);
 			}
@@ -239,6 +269,8 @@ void Obj3d::shaderInit(GLuint &shaderProgram, Obj3d &asset)
 	asset.emissiveLoc = glGetUniformLocation(shaderProgram, "emissive");
 	asset.shininessLoc = glGetUniformLocation(shaderProgram, "shininess");
 	asset.texUnitLoc = glGetUniformLocation(shaderProgram, "texUnit");
+
+	shaderProg = shaderProgram;
 
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);

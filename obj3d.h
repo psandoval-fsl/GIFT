@@ -58,11 +58,18 @@ class Obj3d{
 	GLuint texUnitLoc;
 	GLuint cubeHandle;
 
+	GLuint shaderProg;
+
 	public:
+
+	Obj3d(GLuint shaderPrg);
+
 	const struct aiScene * getScene(void){return scene;};
 	GLuint getCubeHandle(void){return cubeHandle;};
+	GLuint getShaderProgram(void){return shaderProg;};
 	void setCubeHandle(GLuint handle){cubeHandle = handle;};
 	void set_float4(float f[4], float a, float b, float c, float d);
+
 	void color4_to_float4(const struct aiColor4D *c, float f[4]);
 	void loadAsset(const char * path, Obj3d &asset);
 	void shaderInit(GLuint &shaderProgram, Obj3d &asset);
