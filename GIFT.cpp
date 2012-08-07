@@ -6,11 +6,13 @@
  */
 
 /* TODO
-	->optimize
-	->get more and fancier shaders
-	->animation
-	->load light(s) position(s)
-*/
+ * 	->Obj3d has rotation, scale, and translation relative to global
+ * 	->shader program per mesh
+ *	->optimize
+ *	->get more and fancier shaders
+ *	->animation
+ *	->load light(s) position(s)
+ */
 
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
