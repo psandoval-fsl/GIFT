@@ -118,12 +118,12 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 			matModelView, matProj, sbPosLoc, sbVBO);
 
 	fslLoadIdentityMatrix4x4 (matModelView);
-	fslTranslateMatrix4x4 (matModelView, 0, -2, -10);
+	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
 
 	//fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
-	//fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
+	fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
 	fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
-	fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
+	//fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
 	
 	glUseProgram(assets->getShaderProgram());
 	glUniformMatrix4fv( viewMatrixLoc, 1, 0, matModelView );
@@ -186,7 +186,9 @@ int main(int argc, char** argv)
 	}
 
 	//assets->start(g_hTXShaderProgram, "resources/models/jeep1.3ds", *assets);
-    assets->start(g_hPShaderProgram, "resources/models/porsche82.3ds", *assets);
+    //assets->start(g_hPShaderProgram, "resources/models/porsche82.3ds", *assets);
+    //assets->start(g_hPShaderProgram, "resources/models/Convertible.lwo", *assets);
+	assets->start(g_hPShaderProgram, "resources/models/mp.lwo", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/camaro_2006.3ds", *assets);
 
     if(!assets->getScene())
