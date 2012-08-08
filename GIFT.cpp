@@ -6,7 +6,7 @@
  */
 
 /* TODO
- * 	->Obj3d has rotation, scale, and translation relative to global
+ * 	->add simple per object animation framework
  * 	->shader program per mesh
  *	->optimize
  *	->get more and fancier shaders
@@ -49,6 +49,9 @@ GLuint       projMatrixLoc      = 0;
 
 GLuint sbVMLoc, sbPMLoc, sbPosLoc, sbTxHandle;
 GLuint sbVBO[2];
+
+float matProj[16] = {0};
+float matModelView[16] = {0};
 
 int preRender()
 {
@@ -94,6 +97,11 @@ int preRender()
 		printf("Texture shader program not compiled/linked\n");
 		return 1;
 	}
+
+	// Build a perspective projection matrix. You should consider using ortho
+	//instead of perspective for clusters.
+	fslPerspectiveMatrix4x4 ( matProj, 70.f, 1.3333f, 0.1f, 200.f);
+
 	return 0;
 
 }
@@ -105,17 +113,11 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
-	float matModelView[16] = {0};
-	fslLoadIdentityMatrix4x4 (matModelView);
-	
-	// Build a perspective projection matrix. You should consider using ortho
-	//instead of perspective for clusters.
-	float matProj[16] = {0};
-	fslPerspectiveMatrix4x4 ( matProj, 70.f, 1.3333f, 0.1f, 200.f);
+	//uncomment to draw skybox/cubemap
+	/*fslLoadIdentityMatrix4x4 (matModelView);
 	fslRotateMatrix4x4(matModelView, 180, FSL_Z_AXIS);
-	
 	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc,
-			matModelView, matProj, sbPosLoc, sbVBO);
+			matModelView, matProj, sbPosLoc, sbVBO);*/
 
 	fslLoadIdentityMatrix4x4 (matModelView);
 	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
@@ -125,13 +127,7 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
 	//fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
 	
-	glUseProgram(assets->getShaderProgram());
-	glUniformMatrix4fv( viewMatrixLoc, 1, 0, matModelView );
-	glUniformMatrix4fv( projMatrixLoc, 1, 0, matProj );
-
-	//Renders the car
-    aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-	assets->recursive_render(id, assets->getScene()->mRootNode, *assets);
+	assets->draw(matModelView, matProj, viewMatrixLoc, projMatrixLoc);
    
 	// swap buffers
 	glFlush();

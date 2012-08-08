@@ -57,7 +57,7 @@ SRCDIR			= .
 #LFLAGS                  += $(EGL_FLAGS) $(ES20_FLAGS) -lm
 LFLAGS			+= $(EGL_FLAGS) $(ES20_FLAGS) $(ASSIMP_FLAGS) $(DEVIL_FLAGS) -lm
 
-OBJECTS			= GIFT.o obj3d.o fslutil.o TouchScreen.o
+OBJECTS			= GIFT.o obj3d.o fslutil.o TouchScreen.o SceneManager.o
 
 
 first: all

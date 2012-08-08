@@ -275,6 +275,18 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 	}
 }
 
+void Obj3d::draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc)
+{
+	glUseProgram(shaderProg);
+	glUniformMatrix4fv( matMVLoc, 1, 0, matMV );
+	glUniformMatrix4fv( matPLoc, 1, 0, matP );
+
+	//Renders the car
+    aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+	recursive_render(id, scene->mRootNode, *this);
+
+}
+
 /***************************************************************************************
 * renders recusrively
 ***************************************************************************************/

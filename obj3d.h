@@ -79,6 +79,6 @@ class Obj3d{
 
 	void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset);
 	int LoadGLTextures(const aiScene* scene, Obj3d &asset);
-
+	void draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc);
 
 };
