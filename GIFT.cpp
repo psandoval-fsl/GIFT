@@ -23,7 +23,7 @@
 #include <map>
 #include <sys/time.h>
 
-#include "obj3d.h"
+#include "SceneManager.h"
 
 #include "fslutil.h"
 #include "TouchScreen.h"
@@ -52,6 +52,10 @@ GLuint sbVBO[2];
 
 float matProj[16] = {0};
 float matModelView[16] = {0};
+
+SceneManager * mySceneManager;
+Obj3d * assets;
+uint mySceneIndex;
 
 int preRender()
 {
@@ -102,6 +106,17 @@ int preRender()
 	//instead of perspective for clusters.
 	fslPerspectiveMatrix4x4 ( matProj, 70.f, 1.3333f, 0.1f, 200.f);
 
+	//create scenes for animations
+	mySceneManager = new SceneManager();
+	vector3d_f rotation;
+	vector3d_f translation;
+
+	rotation.x=0; rotation.y=0; rotation.z=0;
+	translation.x=-20; translation.y=+10; translation.z=-30;
+
+	mySceneIndex=mySceneManager->createScene(rotation, translation, 300, assets);
+	fslLoadIdentityMatrix4x4 (matModelView);
+	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
 	return 0;
 
 }
@@ -119,12 +134,12 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc,
 			matModelView, matProj, sbPosLoc, sbVBO);*/
 
-	fslLoadIdentityMatrix4x4 (matModelView);
-	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
+
+	mySceneManager->setScene(mySceneIndex, matModelView);
 
 	//fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
-	fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
-	fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
+	//fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
+	//fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
 	//fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
 	
 	assets->draw(matModelView, matProj, viewMatrixLoc, projMatrixLoc);
@@ -171,7 +186,7 @@ int main(int argc, char** argv)
 	unsigned int fpsEnd = 0;
 	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	Obj3d * assets = new Obj3d(false);
+	assets = new Obj3d(false);
 
 	EGLinit(eglDisplay, eglSurface);
 
@@ -202,6 +217,7 @@ int main(int argc, char** argv)
 	{
    		if (1==runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height))
 		{
+
 			break;
 		}
 		fpsStart = fslGetTickCount();

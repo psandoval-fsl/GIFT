@@ -13,22 +13,23 @@
 
 typedef	struct Scene_{
 		Obj3d * obj3d;
-		vector3d_i vecTranslation;
+		vector3d_f vecTranslation;
 		vector3d_f vecRotation;
 		uint frames;
+		uint passedFrames;
 		float desiredMatMV[16];
 	}Scene;
 
 class SceneManager {
 
-	Scene myScenes[6];
+	Scene * myScenes[20];
 
 public:
 	SceneManager();
 	virtual ~SceneManager();
 
-	Scene createScene(vector3d_f rot, vector3d_i trans, uint frames, Obj3d * obj);
-	bool setScene(Scene scene, float * matMV);
+	uint createScene(vector3d_f rot, vector3d_f trans, uint frames, Obj3d * obj);
+	bool setScene(uint scene, float * matMV);
 
 };
 

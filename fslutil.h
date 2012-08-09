@@ -74,16 +74,16 @@ typedef enum fslInputType_e
 
 typedef struct vector3d_int
 {
-	int rot_x;
-	int rot_y;
-	int rot_z;
+	int x;
+	int y;
+	int z;
 }vector3d_i;
 
 typedef struct vector3d_float
 {
-	float rot_x;
-	float rot_y;
-	float rot_z;
+	float x;
+	float y;
+	float z;
 }vector3d_f;
 
 typedef struct fslInputEventType_s
