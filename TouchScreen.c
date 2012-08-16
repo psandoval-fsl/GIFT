@@ -236,7 +236,6 @@ int runTouch(float &Xrot, float &Yrot, float &Zrot, float &Zoom, int width, int 
 {
 	static float zoomLatch = -2.0, zoom = -2.0f, Yrotation = 0.0f, zoomFactor = 0.0f, 
 		XrotationLatch = 0.0f, rotationLatch = 0.0f, Zrotation = 0.0f, Xrotation = 0.0f;
-	int object = 0;
 
 	//Touch screen code	
 	updateTouch();
@@ -278,11 +277,23 @@ int runTouch(float &Xrot, float &Yrot, float &Zrot, float &Zoom, int width, int 
 	if (mTouch[0].tap){
 			// check if tap occured in the bottom right corner
 			if ((mTouch[0].fx > 900) && (mTouch[0].fy > 620)){
-				if (object) object = 0;
-				else object = 1;
+				//if (object) object = 0;
+				//else object = 1;
+				mTouch[0].tap = 0;
+				return 2;
 			}// if not there, what about lower left corner
 			else if ((mTouch[0].fx < 100) && (mTouch[0].fy > 620)){
+				mTouch[0].tap = 0;
 				return 1;
+			}//alright upper right then?
+			else if ((mTouch[0].fx > 900) && (mTouch[0].fy < 50)){
+				mTouch[0].tap = 0;
+				return 3;
+			}
+			//upper left?
+			else if ((mTouch[0].fx < 100) && (mTouch[0].fy < 50)){
+				mTouch[0].tap = 0;
+				return 4;
 			}
 		mTouch[0].tap = 0; //tap event consumed, reset it regardless if it's in the monitored area or not.
 	}

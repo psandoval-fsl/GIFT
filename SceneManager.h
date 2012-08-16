@@ -28,8 +28,10 @@ public:
 	SceneManager();
 	virtual ~SceneManager();
 
-	uint createScene(vector3d_f rot, vector3d_f trans, uint frames, Obj3d * obj);
+	void createScene(vector3d_f rot, vector3d_f trans, uint frames, Obj3d * obj);
 	bool setScene(uint scene, float * matMV);
+	void startScene(uint scene);
+	void animate(float * matMV);
 
 };
 

@@ -977,7 +977,7 @@ int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface) {
 		EGL_DEPTH_SIZE,     24,
 		EGL_STENCIL_SIZE,   EGL_DONT_CARE,
 		EGL_SAMPLE_BUFFERS, EGL_DONT_CARE,
-		EGL_SAMPLES,        EGL_DONT_CARE, //2, 4, to enable FSAA, EGL_DONT_CARE to  disable
+		EGL_SAMPLES,        4, //2, 4, to enable FSAA, EGL_DONT_CARE to  disable
 		EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
 		EGL_MIN_SWAP_INTERVAL, 1,
 		EGL_NONE

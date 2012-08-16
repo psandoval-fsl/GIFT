@@ -52,6 +52,8 @@ void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
+	glEnable( GL_BLEND );
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Obj3d::set_float4(float f[4], float a, float b, float c, float d)

@@ -55,7 +55,6 @@ float matModelView[16] = {0};
 
 SceneManager * mySceneManager;
 Obj3d * assets;
-uint mySceneIndex;
 
 int preRender()
 {
@@ -110,13 +109,20 @@ int preRender()
 	mySceneManager = new SceneManager();
 	vector3d_f rotation;
 	vector3d_f translation;
-
-	rotation.x=0; rotation.y=0; rotation.z=0;
 	translation.x=-20; translation.y=+10; translation.z=-30;
 
-	mySceneIndex=mySceneManager->createScene(rotation, translation, 300, assets);
+	rotation.x=0; rotation.y=0; rotation.z=0;
+	mySceneManager->createScene(rotation, translation, 90, assets); //scene 0
+
+	translation.x=+5; translation.y=-2; translation.z=-15;
+	mySceneManager->createScene(rotation, translation, 30, assets); //scene 1
+
+	translation.x=0; translation.y=-1; translation.z=-6;
+	mySceneManager->createScene(rotation, translation, 20, assets); //scene 2
+
+	mySceneManager->startScene(2);
 	fslLoadIdentityMatrix4x4 (matModelView);
-	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
+	//fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
 	return 0;
 
 }
@@ -135,7 +141,8 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 			matModelView, matProj, sbPosLoc, sbVBO);*/
 
 
-	mySceneManager->setScene(mySceneIndex, matModelView);
+	//mySceneManager->setScene(0, matModelView);
+	mySceneManager->animate(matModelView);
 
 	//fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
 	//fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
@@ -187,6 +194,7 @@ int main(int argc, char** argv)
 	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
 	assets = new Obj3d(false);
+	int touch;
 
 	EGLinit(eglDisplay, eglSurface);
 
@@ -199,7 +207,7 @@ int main(int argc, char** argv)
 	//assets->start(g_hTXShaderProgram, "resources/models/jeep1.3ds", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/porsche82.3ds", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/Convertible.lwo", *assets);
-	assets->start(g_hPShaderProgram, "resources/models/mp.lwo", *assets);
+	assets->start(g_hPShaderProgram, "resources/models/Mustang.lwo", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/camaro_2006.3ds", *assets);
 
     if(!assets->getScene())
@@ -215,11 +223,17 @@ int main(int argc, char** argv)
 	//for (int x = 0;x<1;x++) 
 	for (;;)
 	{
-   		if (1==runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height))
-		{
-
-			break;
-		}
+		touch = runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height);
+   		if (1==touch) break;
+   		if (2==touch){
+   			mySceneManager->startScene(0);
+   		}
+   		if (3==touch){
+   			mySceneManager->startScene(1);
+   		}
+   		if (4==touch){
+   			mySceneManager->startScene(2);
+   		}
 		fpsStart = fslGetTickCount();
 		Render(assets, Xrotation, Yrotation, Zrotation, zoom);
 		fpsEnd = fslGetTickCount();
