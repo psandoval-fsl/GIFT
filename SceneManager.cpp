@@ -67,13 +67,14 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			rot.y = (myScenes[scene]->vecRotation.y - (asin(matMV[8]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			rot.z = (myScenes[scene]->vecRotation.z - (asin(matMV[1]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 
-		//handle translation
-		fslTranslateMatrix4x4(matMV, trans.x, trans.y, trans.z);
+			fslTranslateMatrix4x4(matMV, trans.x, trans.y, trans.z);
 
-		//handle rotation
-		fslRotateMatrix4x4(matMV, rot.x, FSL_X_AXIS);
-		fslRotateMatrix4x4(matMV, rot.y, FSL_Y_AXIS);
-		fslRotateMatrix4x4(matMV, rot.z, FSL_Z_AXIS);
+			//handle rotation
+			fslRotateMatrix4x4(matMV, rot.x, FSL_X_AXIS);
+			fslRotateMatrix4x4(matMV, rot.y, FSL_Y_AXIS);
+			fslRotateMatrix4x4(matMV, rot.z, FSL_Z_AXIS);
+			//handle translation
+
 		}
 		//if animation completed, return done, reset scene
 		if(myScenes[scene]->passedFrames == myScenes[scene]->frames){

@@ -109,14 +109,16 @@ int preRender()
 	mySceneManager = new SceneManager();
 	vector3d_f rotation;
 	vector3d_f translation;
-	translation.x=-20; translation.y=+10; translation.z=-30;
+	translation.x=0; translation.y=0; translation.z=-5;
 
 	rotation.x=0; rotation.y=0; rotation.z=0;
 	mySceneManager->createScene(rotation, translation, 90, assets); //scene 0
 
-	translation.x=+5; translation.y=-2; translation.z=-15;
+	rotation.x=0; rotation.y=0; rotation.z=0;
+	translation.x=0; translation.y=1; translation.z=-3;
 	mySceneManager->createScene(rotation, translation, 30, assets); //scene 1
 
+	rotation.x=0; rotation.y=0; rotation.z=0;
 	translation.x=0; translation.y=-1; translation.z=-6;
 	mySceneManager->createScene(rotation, translation, 20, assets); //scene 2
 
