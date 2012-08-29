@@ -10,6 +10,26 @@ Obj3d::Obj3d(bool hasTx){
 		// proj, modelview matrices are uniforms
 	modelMatrixLoc= 0;
 
+	matRot[0] = 1;
+	matRot[1] = 0;
+	matRot[2] = 0;
+	matRot[3] = 0;
+
+	matRot[4] = 0;
+	matRot[5] = 1;
+	matRot[6] = 0;
+	matRot[7] = 0;
+
+	matRot[8] = 0;
+	matRot[9] = 0;
+	matRot[10] = 1;
+	matRot[11] = 0;
+
+	matRot[12] = 0;
+	matRot[13] = 0;
+	matRot[14] = 0;
+	matRot[15] = 1;
+
 		//get uniform locations for frag shader material stuff
 	diffuseLoc = 0;
 	ambientLoc = 0;
@@ -53,7 +73,7 @@ void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
 	glEnable( GL_BLEND );
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Obj3d::set_float4(float f[4], float a, float b, float c, float d)
@@ -284,8 +304,7 @@ void Obj3d::draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc)
 	glUniformMatrix4fv( matPLoc, 1, 0, matP );
 
 	//Renders the car
-    aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-	recursive_render(id, scene->mRootNode, *this);
+	recursive_render(matRot, scene->mRootNode, *this);
 
 }
 
@@ -293,13 +312,20 @@ void Obj3d::draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc)
 * renders recusrively
 ***************************************************************************************/
 
-void Obj3d::recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset)
+void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd, Obj3d &asset)
 {
 	// Get node transformation matrix
 	struct aiMatrix4x4 m = nd->mTransformation;
 	
 	m.Transpose();
-	m*=currentTransform;
+
+	m*= aiMatrix4x4(currentTransform[0], currentTransform[1], currentTransform[2], currentTransform[3],
+			currentTransform[4], currentTransform[5], currentTransform[6], currentTransform[7],
+			currentTransform[8], currentTransform[9], currentTransform[10], currentTransform[11],
+			currentTransform[12], currentTransform[13], currentTransform[14], currentTransform[15]);
+
+//	fslPrintMatrix4x4(m[0]);
+//	printf("\n");
 
 	glUniformMatrix4fv( asset.modelMatrixLoc, 1, 0, m[0] );
 
@@ -343,12 +369,13 @@ void Obj3d::recursive_render (aiMatrix4x4 currentTransform, const struct aiNode*
 	for (unsigned int n=0; n < nd->mNumChildren; ++n){
 		if(nd->mNumMeshes>0)
 		{
-			recursive_render(m, nd->mChildren[n], asset);
+			//printf("stored\n");
+			recursive_render(m[0], nd->mChildren[n], asset);
 		} else
 		{
-			aiMatrix4x4 id(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-			id.Transpose();
-			recursive_render(id, nd->mChildren[n], asset);
+			//printf("new\n");
+			//float id[16] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+			recursive_render(m[0], nd->mChildren[n], asset);
 		}
 	}
 }

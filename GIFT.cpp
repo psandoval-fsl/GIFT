@@ -6,11 +6,13 @@
  */
 
 /* TODO
- * 	->add simple per object animation framework
+ * 	->add rotation
+ * 	->fix textures
+ * 	->fix transparency
  * 	->shader program per mesh
  *	->optimize
  *	->get more and fancier shaders
- *	->animation
+ *	->per mesh animation
  *	->load light(s) position(s)
  */
 
@@ -25,7 +27,7 @@
 
 #include "SceneManager.h"
 
-#include "fslutil.h"
+//#include "fslutil.h"
 #include "TouchScreen.h"
 
 int width  = 1024; //1280
@@ -109,16 +111,16 @@ int preRender()
 	mySceneManager = new SceneManager();
 	vector3d_f rotation;
 	vector3d_f translation;
-	translation.x=0; translation.y=0; translation.z=-5;
 
-	rotation.x=0; rotation.y=0; rotation.z=0;
-	mySceneManager->createScene(rotation, translation, 90, assets); //scene 0
+	translation.x=-2; translation.y=0; translation.z=-5;
+	rotation.x=270; rotation.y=0; rotation.z=0;
+	mySceneManager->createScene(rotation, translation, 10, assets); //scene 0
 
-	rotation.x=0; rotation.y=0; rotation.z=0;
-	translation.x=0; translation.y=1; translation.z=-3;
+	rotation.x=0; rotation.y=0; rotation.z=180;
+	translation.x=1; translation.y=0.5; translation.z=-3;
 	mySceneManager->createScene(rotation, translation, 30, assets); //scene 1
 
-	rotation.x=0; rotation.y=0; rotation.z=0;
+	rotation.x=0; rotation.y=45; rotation.z=0;
 	translation.x=0; translation.y=-1; translation.z=-6;
 	mySceneManager->createScene(rotation, translation, 20, assets); //scene 2
 
@@ -191,11 +193,11 @@ int main(int argc, char** argv)
 {
 	int frameCount = 0;
 	unsigned int start = fslGetTickCount();
-	unsigned int fpsStart = 0;
-	unsigned int fpsEnd = 0;
-	unsigned int miliseconds = 0;
+//	unsigned int fpsStart = 0;
+//	unsigned int fpsEnd = 0;
+//	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	assets = new Obj3d(false);
+	assets = new Obj3d(true);
 	int touch;
 
 	EGLinit(eglDisplay, eglSurface);
@@ -210,6 +212,7 @@ int main(int argc, char** argv)
     //assets->start(g_hPShaderProgram, "resources/models/porsche82.3ds", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/Convertible.lwo", *assets);
 	assets->start(g_hPShaderProgram, "resources/models/Mustang.lwo", *assets);
+	//assets->start(g_hPShaderProgram, "resources/models/test.3DS", *assets);
     //assets->start(g_hPShaderProgram, "resources/models/camaro_2006.3ds", *assets);
 
     if(!assets->getScene())
@@ -222,7 +225,7 @@ int main(int argc, char** argv)
 	sbTxHandle = assets->getCubeHandle();
 
 	// Main loop
-	//for (int x = 0;x<1;x++) 
+	//for (int x = 0;x<4;x++)
 	for (;;)
 	{
 		touch = runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height);
@@ -236,14 +239,14 @@ int main(int argc, char** argv)
    		if (4==touch){
    			mySceneManager->startScene(2);
    		}
-		fpsStart = fslGetTickCount();
+		//fpsStart = fslGetTickCount();
 		Render(assets, Xrotation, Yrotation, Zrotation, zoom);
-		fpsEnd = fslGetTickCount();
-		miliseconds = fpsEnd - fpsStart;
+		//fpsEnd = fslGetTickCount();
+/*		miliseconds = fpsEnd - fpsStart;
 		if (miliseconds<17) //17 so we cap the framerate to ~60
 		{
 			usleep((17-miliseconds)*1000);
-		}
+		}*/
 		//printf("frame %i\n",frameCount);
 		++ frameCount;
 		eglSwapBuffers(eglDisplay, eglSurface);

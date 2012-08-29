@@ -63,16 +63,17 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			trans.y = (myScenes[scene]->vecTranslation.y-matMV[13])/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			trans.z = (myScenes[scene]->vecTranslation.z-matMV[14])/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 
-			rot.x = (myScenes[scene]->vecRotation.x - (asin(matMV[9]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
-			rot.y = (myScenes[scene]->vecRotation.y - (asin(matMV[8]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
-			rot.z = (myScenes[scene]->vecRotation.z - (asin(matMV[1]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
+			rot.x = (myScenes[scene]->vecRotation.x - (asin(myScenes[scene]->obj3d->getRotMat()[9]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
+			rot.y = (myScenes[scene]->vecRotation.y - (asin(myScenes[scene]->obj3d->getRotMat()[8]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
+			rot.z = (myScenes[scene]->vecRotation.z - (asin(myScenes[scene]->obj3d->getRotMat()[1]) * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 
 			fslTranslateMatrix4x4(matMV, trans.x, trans.y, trans.z);
 
 			//handle rotation
-			fslRotateMatrix4x4(matMV, rot.x, FSL_X_AXIS);
-			fslRotateMatrix4x4(matMV, rot.y, FSL_Y_AXIS);
-			fslRotateMatrix4x4(matMV, rot.z, FSL_Z_AXIS);
+
+			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.x, FSL_X_AXIS);
+			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.y, FSL_Y_AXIS);
+			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.z, FSL_Z_AXIS);
 			//handle translation
 
 		}
@@ -84,7 +85,9 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			return true;
 		}
 		myScenes[scene]->passedFrames++;
-		printf("scene: %i, frames: %i, passed: %i\n",scene, myScenes[scene]->frames,myScenes[scene]->passedFrames);
+		printf("scene: %i, frames: %i, passed: %i ",scene, myScenes[scene]->frames,myScenes[scene]->passedFrames);
+		printf("angle in [9]: %f \n",asin((matMV[9]) * 57.295779513));
+		//printf("0: %f, 1: %f, 2: %f\n",myScenes[scene]->obj3d->getRotMat()[0],myScenes[scene]->obj3d->getRotMat()[1], myScenes[scene]->obj3d->getRotMat()[2]);
 	}
 	return false;
 }

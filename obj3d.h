@@ -12,6 +12,7 @@
 #include <EGL/egl.h>
 
 #include <stdio.h>
+#include "fslutil.h"
 
 // Information to render each assimp node
 
@@ -49,6 +50,7 @@ class Obj3d{
 	GLuint texCoordLoc;
 
 	bool hasTextures;
+	float matRot[16];
 
 	GLuint diffuseLoc;
 	GLuint ambientLoc;
@@ -70,6 +72,7 @@ class Obj3d{
 	void start(GLuint shaderPrg, const char * path, Obj3d &obj);
 
 	const struct aiScene * getScene(void){return scene;};
+	float * getRotMat(void){return matRot;};
 	GLuint getCubeHandle(void){return cubeHandle;};
 	GLuint getShaderProgram(void){return shaderProg;};
 	void setCubeHandle(GLuint handle){cubeHandle = handle;};
@@ -77,7 +80,7 @@ class Obj3d{
 
 	void color4_to_float4(const struct aiColor4D *c, float f[4]);
 
-	void recursive_render (aiMatrix4x4 currentTransform, const struct aiNode* nd, Obj3d &asset);
+	void recursive_render (float * currentTransform, const struct aiNode* nd, Obj3d &asset);
 	int LoadGLTextures(const aiScene* scene, Obj3d &asset);
 	void draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc);
 
