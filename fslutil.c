@@ -579,7 +579,7 @@ void fslRotateMatrix4x4 (float *m, float angle, fslAxis axis)
 			rotate[8] = sin(radians);
 			rotate[10] = cos(radians);
 			fslMultMatrix4x4(store, rotate, m);
-         memcpy( m, store, 16*sizeof(float) );
+			memcpy( m, store, 16*sizeof(float) );
 		break;		
 		case FSL_Z_AXIS:
 			rotate[0] = cos(radians);
@@ -594,8 +594,6 @@ void fslRotateMatrix4x4 (float *m, float angle, fslAxis axis)
 		break;
 
 	}
-
-
 }
 
 void fslTranslateMatrix4x4 (float *m, float transX, float transY, float transZ)

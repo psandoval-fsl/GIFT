@@ -70,10 +70,13 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			fslTranslateMatrix4x4(matMV, trans.x, trans.y, trans.z);
 
 			//handle rotation
-
+			printf("before rot y: %f, %f degrees. \n",myScenes[scene]->obj3d->getRotMat()[8], rot.y);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.x, FSL_X_AXIS);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.y, FSL_Y_AXIS);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), rot.z, FSL_Z_AXIS);
+			//TODO fix angle cornercases that make the model disappear.
+			printf("after rot y: %f\n",myScenes[scene]->obj3d->getRotMat()[8]);
+			printf("rad y[8]: %f \n \n",((asin(myScenes[scene]->obj3d->getRotMat()[8]))));
 			//handle translation
 
 		}
@@ -85,8 +88,8 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			return true;
 		}
 		myScenes[scene]->passedFrames++;
-		printf("scene: %i, frames: %i, passed: %i ",scene, myScenes[scene]->frames,myScenes[scene]->passedFrames);
-		printf("angle in [9]: %f \n",asin((matMV[9]) * 57.295779513));
+		//printf("scene: %i, frames: %i, passed: %i ",scene, myScenes[scene]->frames,myScenes[scene]->passedFrames);
+		//printf("x[9]: %f, y[8]: %f, z[1]: %f \n",  (asin(myScenes[scene]->obj3d->getRotMat()[9]) * 57.295779513), (asin(myScenes[scene]->obj3d->getRotMat()[8]) * 57.295779513),  (asin(myScenes[scene]->obj3d->getRotMat()[1]) * 57.295779513));
 		//printf("0: %f, 1: %f, 2: %f\n",myScenes[scene]->obj3d->getRotMat()[0],myScenes[scene]->obj3d->getRotMat()[1], myScenes[scene]->obj3d->getRotMat()[2]);
 	}
 	return false;

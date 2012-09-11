@@ -112,17 +112,17 @@ int preRender()
 	vector3d_f rotation;
 	vector3d_f translation;
 
+	rotation.x=70; rotation.y=0; rotation.z=0;
 	translation.x=-2; translation.y=0; translation.z=-5;
-	rotation.x=270; rotation.y=0; rotation.z=0;
 	mySceneManager->createScene(rotation, translation, 10, assets); //scene 0
 
-	rotation.x=0; rotation.y=0; rotation.z=180;
+	rotation.x=0; rotation.y=0; rotation.z=20;
 	translation.x=1; translation.y=0.5; translation.z=-3;
 	mySceneManager->createScene(rotation, translation, 30, assets); //scene 1
 
-	rotation.x=0; rotation.y=45; rotation.z=0;
+	rotation.x=0; rotation.y=350; rotation.z=0;
 	translation.x=0; translation.y=-1; translation.z=-6;
-	mySceneManager->createScene(rotation, translation, 20, assets); //scene 2
+	mySceneManager->createScene(rotation, translation, 10, assets); //scene 2
 
 	mySceneManager->startScene(2);
 	fslLoadIdentityMatrix4x4 (matModelView);
