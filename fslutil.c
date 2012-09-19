@@ -575,16 +575,16 @@ void fslRotateMatrix4x4 (float *m, float angle, fslAxis axis)
 		break;
 		case FSL_Y_AXIS:
 			rotate[0] = cos(radians);
-			rotate[2] = -sin(radians);
-			rotate[8] = sin(radians);
+			rotate[2] = sin(radians);
+			rotate[8] = -sin(radians);
 			rotate[10] = cos(radians);
 			fslMultMatrix4x4(store, rotate, m);
 			memcpy( m, store, 16*sizeof(float) );
 		break;		
 		case FSL_Z_AXIS:
 			rotate[0] = cos(radians);
-			rotate[1] = sin(radians);
-			rotate[4] = -sin(radians);
+			rotate[1] = -sin(radians);
+			rotate[4] = sin(radians);
 			rotate[5] = cos(radians);
 			fslMultMatrix4x4(store, rotate, m);
          memcpy( m, store, 16*sizeof(float) );
@@ -1184,4 +1184,46 @@ void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLu
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
 	glDisableVertexAttribArray(sbPosLoc);
 	glEnable(GL_DEPTH_TEST);
+}
+
+//This function stores the 6 possible angles in radians like this:
+//angles[0:2] x1, y1, z1. angles[3:5] x2, y2, z2
+void getEulerAnglesFromMVMatrix(float * mView, float * angles)
+{
+	if (mView[8] != abs(1))
+	{
+		angles[1]=-asin(mView[8]);
+		angles[4]= 3.141592654f - angles[1];
+		angles[0]=atan2(mView[9]/cos(angles[1]), mView[10]/cos(angles[1]));
+		angles[3]=atan2(mView[9]/cos(angles[4]), mView[10]/cos(angles[4]));
+		angles[2]=atan2(mView[4]/cos(angles[1]), mView[0]/cos(angles[1]));
+		angles[5]=atan2(mView[4]/cos(angles[4]), mView[0]/cos(angles[4]));
+	} else { //Gimbal lock!
+		angles[2]=0;
+		angles[5]=0;
+		if (mView[8]==-1)
+		{
+			angles[1]=1.570796327f;
+			angles[0]=atan2(mView[1],mView[2]);
+		} else
+		{
+			angles[1]=-1.570796327f;
+			angles[0]=atan2(-mView[1],-mView[2]);
+		}
+		angles[4]=angles[1];
+		angles[3]=angles[0];
+	}
+
+	if(angles[0]<0)
+		angles[0] = 3.141592654f + angles [3];
+	if(angles[1]<0)
+		angles[1] = 3.141592654f + angles [4];
+	if(angles[2]<0)
+		angles[2] = 3.141592654f + angles [5];
+	if(angles[0]>360)
+		angles[0] -= 360;
+	if(angles[1]>360)
+		angles[1] -= 360;
+	if(angles[2]>360)
+		angles[2] -= 360;
 }

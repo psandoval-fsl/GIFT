@@ -205,5 +205,6 @@ GLuint CreateDynamicCubemap(void);
 void initSkybox(GLuint *sbVBO, GLuint &sbPosLoc);
 void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLuint sbPMLoc, 
 				  float *matModelView, float *matProj, GLuint sbPosLoc, GLuint *sbVBO);
+void getEulerAnglesFromMVMatrix(float * mView, float * angles);
 #endif //_FSLUTIL_H_
 
