@@ -1220,10 +1220,10 @@ void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 		angles[1] = 3.141592654f + angles [4];
 	if(angles[2]<0)
 		angles[2] = 3.141592654f + angles [5];
-	if(angles[0]>360)
-		angles[0] -= 360;
-	if(angles[1]>360)
-		angles[1] -= 360;
-	if(angles[2]>360)
-		angles[2] -= 360;
+	if(angles[0]>6.283185307f)
+		angles[0] -= 6.283185307f;
+	if(angles[1]>6.283185307f)
+		angles[1] -= 6.283185307f;
+	if(angles[2]>6.283185307f)
+		angles[2] -= 6.283185307f;
 }
