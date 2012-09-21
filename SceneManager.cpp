@@ -26,8 +26,18 @@ void SceneManager::createScene(vector3d_f rot, vector3d_f trans, uint frames, Ob
 		if (this->myScenes[index]==0)
 			break;
 	}
+	//validate entries
 	if (frames==0)
 		frames=1;
+//	if (rot.x > 180)
+//		rot.x = - (360 - rot.x);
+//	if (rot.y > 180)
+//		rot.y = - (360 - rot.y);
+//	if (rot.z > 180)
+//		rot.z = - (360 - rot.z);
+
+
+
 	//TODO check for rotation angles to be between 0 and 359, positive.
 	myScenes[index] = new Scene;
 	myScenes[index]->frames = frames;
@@ -80,15 +90,14 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), angles.x, FSL_X_AXIS);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), angles.y, FSL_Y_AXIS);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), angles.z, FSL_Z_AXIS);
+
 			getEulerAnglesFromMVMatrix(myScenes[scene]->obj3d->getRotMat(), rot);
 			printf("rotated1: x%f, y%f, z%f\n", rot[0]* 57.295779513, rot[1]* 57.295779513, rot[2]* 57.295779513);
 			printf("rotated2: x%f, y%f, z%f\n\n", rot[3]* 57.295779513, rot[4]* 57.295779513, rot[5]* 57.295779513);
-			//handle translation
 
 		}
 		//if animation completed, return done, reset scene
 		if(myScenes[scene]->passedFrames == myScenes[scene]->frames){
-			//myScenes[scene]->passedFrames = 0;
 			myScenes[scene]->passedFrames++;
 			return true;
 		}

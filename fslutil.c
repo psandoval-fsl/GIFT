@@ -990,7 +990,7 @@ int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface) {
 	EGLConfig configs[10];
 	EGLint matchingConfigs;
 
-	display = fbGetDisplay();
+	display = fbGetDisplay(eglContext);
 	
 	int w, h, t, l;
 	l=t=0;
@@ -1190,7 +1190,15 @@ void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLu
 //angles[0:2] x1, y1, z1. angles[3:5] x2, y2, z2
 void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 {
-	if (mView[8] != abs(1))
+//	float mv8RoundTwo = floorf(mView[8] * 100 + 0.5);
+//	mv8RoundTwo /= 100;
+//	printf("mv8: %f\n", mv8RoundTwo);
+//	if (mView[8] > 0.98f)
+//		mView[8] = 1.0f;
+//	if (mView[8] < -0.98f)
+//		mView[8] = -1.0f;
+//	printf("mv8: %f\n", mView[8]);
+	if (abs(mView[8]) != 1)
 	{
 		angles[1]=-asin(mView[8]);
 		angles[4]= 3.141592654f - angles[1];
@@ -1198,6 +1206,7 @@ void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 		angles[3]=atan2(mView[9]/cos(angles[4]), mView[10]/cos(angles[4]));
 		angles[2]=atan2(mView[4]/cos(angles[1]), mView[0]/cos(angles[1]));
 		angles[5]=atan2(mView[4]/cos(angles[4]), mView[0]/cos(angles[4]));
+
 	} else { //Gimbal lock!
 		angles[2]=0;
 		angles[5]=0;
@@ -1213,7 +1222,7 @@ void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 		angles[4]=angles[1];
 		angles[3]=angles[0];
 	}
-
+/*
 	if(angles[0]<0)
 		angles[0] = 3.141592654f + angles [3];
 	if(angles[1]<0)
@@ -1225,5 +1234,5 @@ void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 	if(angles[1]>6.283185307f)
 		angles[1] -= 6.283185307f;
 	if(angles[2]>6.283185307f)
-		angles[2] -= 6.283185307f;
+		angles[2] -= 6.283185307f;*/
 }

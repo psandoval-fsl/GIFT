@@ -1,7 +1,7 @@
 
 #----------------- development environment here
 #important so we know where the libraries are
-LTIB_ROOTFS=/home/fsl/12.04/ltib/rootfs
+LTIB_ROOTFS=/home/fsl/12.08/ltib/rootfs
 
 #set CROSS_COMPILE as below
 CROSS_COMPILE = /opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/bin/arm-fsl-linux-gnueabi-
@@ -50,15 +50,14 @@ DEVIL_FLAGS = -lIL
 
 #-----------------for each app here
 
-APPNAME			= GIFT
+APPNAME			= gift
 DESTDIR			= ./bin
 SRCDIR			= .
 
 #LFLAGS                  += $(EGL_FLAGS) $(ES20_FLAGS) -lm
 LFLAGS			+= $(EGL_FLAGS) $(ES20_FLAGS) $(ASSIMP_FLAGS) $(DEVIL_FLAGS) -lm
 
-OBJECTS			= GIFT.o obj3d.o fslutil.o TouchScreen.o SceneManager.o
-
+OBJECTS			= GIFT.o obj3d.o TouchScreen.o SceneManager.o fslutil.o
 
 first: all
 
