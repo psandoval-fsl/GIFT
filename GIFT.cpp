@@ -53,6 +53,7 @@ GLuint sbVBO[2];
 
 float matProj[16] = {0};
 float matModelView[16] = {0};
+float matSkyBox[16] = {0};
 
 SceneManager * mySceneManager;
 Obj3d * assets;
@@ -138,13 +139,11 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 	//uncomment to draw skybox/cubemap
-	/*fslLoadIdentityMatrix4x4 (matModelView);
-	fslRotateMatrix4x4(matModelView, 180, FSL_Z_AXIS);
+	fslLoadIdentityMatrix4x4 (matSkyBox);
+	fslRotateMatrix4x4(matSkyBox, 180, FSL_Z_AXIS);
 	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc,
-			matModelView, matProj, sbPosLoc, sbVBO);*/
+			matSkyBox, matProj, sbPosLoc, sbVBO);
 
-
-	//mySceneManager->setScene(0, matModelView);
 	mySceneManager->animate(matModelView);
 
 	//fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
