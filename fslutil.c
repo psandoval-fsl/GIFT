@@ -960,7 +960,7 @@ void LoadShaders(const char * vShaderFName, const char * pShaderFName, GLuint & 
 
 //vanilla egl initialization stuff
 int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface) {
-   EGLContext		eglContext;
+   EGLContext		eglContext = 0;
    NativeDisplayType 	display;
    NativeWindowType 	window;
 
@@ -1190,15 +1190,14 @@ void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLu
 //angles[0:2] x1, y1, z1. angles[3:5] x2, y2, z2
 void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 {
-//	float mv8RoundTwo = floorf(mView[8] * 100 + 0.5);
-//	mv8RoundTwo /= 100;
-//	printf("mv8: %f\n", mv8RoundTwo);
-//	if (mView[8] > 0.98f)
-//		mView[8] = 1.0f;
-//	if (mView[8] < -0.98f)
-//		mView[8] = -1.0f;
-//	printf("mv8: %f\n", mView[8]);
-	if (abs(mView[8]) != 1)
+	int i;
+	float aRoundThree[6];
+
+	if (mView[8] > 0.998f)
+		mView[8] = 1.0f;
+	if (mView[8] < -0.998f)
+		mView[8] = -1.0f;
+	if (fabs(mView[8]) != 1)
 	{
 		angles[1]=-asin(mView[8]);
 		angles[4]= 3.141592654f - angles[1];
@@ -1219,20 +1218,24 @@ void getEulerAnglesFromMVMatrix(float * mView, float * angles)
 			angles[1]=-1.570796327f;
 			angles[0]=atan2(-mView[1],-mView[2]);
 		}
-		angles[4]=angles[1];
-		angles[3]=angles[0];
+
 	}
-/*
-	if(angles[0]<0)
-		angles[0] = 3.141592654f + angles [3];
-	if(angles[1]<0)
-		angles[1] = 3.141592654f + angles [4];
-	if(angles[2]<0)
-		angles[2] = 3.141592654f + angles [5];
-	if(angles[0]>6.283185307f)
-		angles[0] -= 6.283185307f;
-	if(angles[1]>6.283185307f)
-		angles[1] -= 6.283185307f;
-	if(angles[2]>6.283185307f)
-		angles[2] -= 6.283185307f;*/
+	for(i=0; i<6; i++){
+		aRoundThree[i] = floorf(angles[i] * 1000 + 0.5);
+        aRoundThree[i] /= 1000;
+        angles[i] = aRoundThree[i];
+	}
+
+//	if(angles[0]<0)
+//		angles[0] = 3.141592654f + angles [3];
+//	if(angles[1]<0)
+//		angles[1] = 3.141592654f + angles [4];
+//	if(angles[2]<0)
+//		angles[2] = 3.141592654f + angles [5];
+//	if(angles[0]>6.283185307f)
+//		angles[0] -= 6.283185307f;
+//	if(angles[1]>6.283185307f)
+//		angles[1] -= 6.283185307f;
+//	if(angles[2]>6.283185307f)
+//		angles[2] -= 6.283185307f;
 }

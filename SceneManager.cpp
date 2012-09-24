@@ -29,12 +29,15 @@ void SceneManager::createScene(vector3d_f rot, vector3d_f trans, uint frames, Ob
 	//validate entries
 	if (frames==0)
 		frames=1;
-//	if (rot.x > 180)
-//		rot.x = - (360 - rot.x);
-//	if (rot.y > 180)
-//		rot.y = - (360 - rot.y);
-//	if (rot.z > 180)
-//		rot.z = - (360 - rot.z);
+	if (rot.x > 180)
+		rot.x = - (360 - rot.x);
+	if (rot.z > 180)
+		rot.z = - (360 - rot.z);
+	//this is bad and I should feel bad about this
+	if (rot.y > 89)
+		rot.y = 89;
+	if (rot.y < -89)
+		rot.y = -89;
 
 
 
@@ -58,11 +61,15 @@ void SceneManager::animate(float * matMV){
 	while(myScenes[i]!=0)
 	{
 		if(setScene(i, matMV)) printf("end! scene: %i\n", i);
+		//setScene(i, matMV);
 		i++;
 	}
 
 }
 
+//TODO This method should animate rotations and translations. Translations work OK, rotations in
+//X and Z work OK. Rotations in Y are limited from -89 to 89. Due to time constraints this will
+//be fixed later
 bool SceneManager::setScene(uint scene, float * matMV){
 
 	if (myScenes[scene]->passedFrames <= myScenes[scene]->frames){
@@ -73,17 +80,17 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			trans.x = (myScenes[scene]->vecTranslation.x-matMV[12])/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			trans.y = (myScenes[scene]->vecTranslation.y-matMV[13])/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			trans.z = (myScenes[scene]->vecTranslation.z-matMV[14])/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
-
+			//printf("frame %i-----------\n", myScenes[scene]->passedFrames);
 			getEulerAnglesFromMVMatrix(myScenes[scene]->obj3d->getRotMat(), rot);
 			angles.x = (myScenes[scene]->vecRotation.x - (rot[0] * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			angles.y = (myScenes[scene]->vecRotation.y - (rot[1] * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 			angles.z = (myScenes[scene]->vecRotation.z - (rot[2] * 57.295779513))/(myScenes[scene]->frames-myScenes[scene]->passedFrames);
 
 			fslTranslateMatrix4x4(matMV, trans.x, trans.y, trans.z);
-			printf("frame %i-----------\n", myScenes[scene]->passedFrames);
-			printf("current rot1: x%f, y%f, z%f\n", rot[0] * 57.295779513, rot[1]* 57.295779513, rot[2]* 57.295779513);
-			printf("current rot2: x%f, y%f, z%f\n", rot[3] * 57.295779513, rot[4]* 57.295779513, rot[5]* 57.295779513);
-			printf("to rotate: x%f, y%f, z%f\n", angles.x, angles.y, angles.z);
+//
+//			printf("current rot1: x%f, y%f, z%f\n", rot[0] * 57.295779513, rot[1]* 57.295779513, rot[2]* 57.295779513);
+//			printf("current rot2: x%f, y%f, z%f\n", rot[3] * 57.295779513, rot[4]* 57.295779513, rot[5]* 57.295779513);
+//			printf("to rotate: x%f, y%f, z%f\n", angles.x, angles.y, angles.z);
 
 			//handle rotation
 
@@ -91,9 +98,9 @@ bool SceneManager::setScene(uint scene, float * matMV){
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), angles.y, FSL_Y_AXIS);
 			fslRotateMatrix4x4(myScenes[scene]->obj3d->getRotMat(), angles.z, FSL_Z_AXIS);
 
-			getEulerAnglesFromMVMatrix(myScenes[scene]->obj3d->getRotMat(), rot);
-			printf("rotated1: x%f, y%f, z%f\n", rot[0]* 57.295779513, rot[1]* 57.295779513, rot[2]* 57.295779513);
-			printf("rotated2: x%f, y%f, z%f\n\n", rot[3]* 57.295779513, rot[4]* 57.295779513, rot[5]* 57.295779513);
+//			getEulerAnglesFromMVMatrix(myScenes[scene]->obj3d->getRotMat(), rot);
+//			printf("rotated1: x%f, y%f, z%f\n", rot[0]* 57.295779513, rot[1]* 57.295779513, rot[2]* 57.295779513);
+//			printf("rotated2: x%f, y%f, z%f\n\n", rot[3]* 57.295779513, rot[4]* 57.295779513, rot[5]* 57.295779513);
 
 		}
 		//if animation completed, return done, reset scene
