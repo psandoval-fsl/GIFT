@@ -35,8 +35,8 @@ void main()
 	 // Compute eye direction in object space:
     mediump vec3 eyeDir = normalize(position - vec3(0.0,0.0,1.0));
 	
-	mat3 model = GetLinearPart(viewMatrix);
+	mat3 model = GetLinearPart(modelMatrix);
     // Reflect eye direction over normal and transform to world space:
-    ReflectDir = model * eyeDir;//model * reflect(eyeDir, normal);
+    ReflectDir = model * eyeDir;//model * reflect(eyeDir, normal); 
 	ReflectDir.y = -ReflectDir.y;
 }

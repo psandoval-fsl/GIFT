@@ -195,7 +195,7 @@ int main(int argc, char** argv)
 //	unsigned int fpsEnd = 0;
 //	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	assets = new Obj3d(true);
+	assets = new Obj3d(false);
 	int touch;
 
 	EGLinit(eglDisplay, eglSurface);
