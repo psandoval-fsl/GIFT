@@ -6,7 +6,8 @@
  */
 
 /* TODO
- * 	->fix transparency
+ * 	->test transparency
+ * 	->make tires non reflective
  * 	->fix textures
  * 	->shader program per mesh
  * 	->fix rotation

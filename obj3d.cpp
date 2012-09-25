@@ -36,6 +36,8 @@ Obj3d::Obj3d(bool hasTx){
 	specularLoc = 0;
 	emissiveLoc = 0;
 	shininessLoc = 0;
+	opacityLoc = 0;
+
 	texUnitLoc = 0;
 
 	shaderProg = 0;
@@ -60,6 +62,7 @@ void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 	specularLoc = glGetUniformLocation(shaderPrg, "specular");
 	emissiveLoc = glGetUniformLocation(shaderPrg, "emissive");
 	shininessLoc = glGetUniformLocation(shaderPrg, "shininess");
+	opacityLoc = glGetUniformLocation(shaderPrg, "opacity");
 	texUnitLoc = glGetUniformLocation(shaderPrg, "texUnit");
 
 	shaderProg = shaderPrg;
@@ -73,7 +76,7 @@ void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
 	glEnable( GL_BLEND );
-	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Obj3d::set_float4(float f[4], float a, float b, float c, float d)
@@ -288,6 +291,11 @@ void Obj3d::loadAsset(const char * path, Obj3d &asset)
 			unsigned int max;
 			aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
 			aMat.shininess = shininess;
+
+			float Opacity = 0.0;
+			aiGetMaterialFloat(mtl, AI_MATKEY_OPACITY, &Opacity);
+			aMat.opacity = Opacity;
+
 			aMesh.matInfo = aMat;
 			asset.myMeshes.push_back(aMesh);
 		}
@@ -336,6 +344,7 @@ void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd,
 		glUniform4fv( asset.ambientLoc, 1, asset.myMeshes[nd->mMeshes[n]].matInfo.ambient);
 		glUniform4fv( asset.specularLoc, 1, asset.myMeshes[nd->mMeshes[n]].matInfo.specular);
 		glUniform1f( asset.shininessLoc, asset.myMeshes[nd->mMeshes[n]].matInfo.shininess);
+		glUniform1f( asset.opacityLoc, asset.myMeshes[nd->mMeshes[n]].matInfo.opacity);
 		glUniform1i( asset.texUnitLoc,0);
 
 		// bind texture
@@ -355,7 +364,10 @@ void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd,
 		glVertexAttribPointer(asset.texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
 		glEnableVertexAttribArray(asset.texCoordLoc);
 
+		//if (asset.myMeshes[nd->mMeshes[n]].matInfo.opacity < 1){
 		glDrawElements(GL_TRIANGLES, asset.myMeshes[nd->mMeshes[n]].numFaces*3, GL_UNSIGNED_SHORT, 0); 			
+		//printf("n=%i, op=%f\n",n,asset.myMeshes[nd->mMeshes[n]].matInfo.opacity);
+		//}
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

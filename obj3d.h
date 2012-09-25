@@ -23,6 +23,7 @@ struct MyMaterial{
 	float specular[4];
 	float emissive[4];
 	float shininess;
+	float opacity;
 	int texCount;
 };
 
@@ -57,6 +58,7 @@ class Obj3d{
 	GLuint specularLoc;
 	GLuint emissiveLoc;
 	GLuint shininessLoc;
+	GLuint opacityLoc;
 	GLuint texCountLoc;
 
 	GLuint texUnitLoc;

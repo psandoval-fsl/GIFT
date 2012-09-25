@@ -9,6 +9,7 @@ uniform vec4 ambient;
 uniform vec4 specular;
 uniform vec4 emissive;
 uniform float shininess;
+uniform float opacity;
 
 uniform samplerCube Sampler;
 
@@ -36,5 +37,7 @@ void main()
 	vec4 env = textureCube(Sampler, ReflectDir);
 
 	//gl_FragColor = (color * intensity) + spec + amb + env; 
-	gl_FragColor = (color * intensity) + spec + env;
+	vec4 fragColor = (color * intensity) + spec + env;
+	fragColor.a = opacity;
+	gl_FragColor = fragColor;
 }
