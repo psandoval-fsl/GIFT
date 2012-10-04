@@ -7,6 +7,7 @@
 uniform vec4 specular;
 uniform vec4 emissive;
 uniform float shininess;
+uniform float opacity;
 
 uniform	sampler2D texUnit;
 uniform samplerCube Sampler;
@@ -29,13 +30,16 @@ void main()
 	float d = dot(lightDir, n);
 	vec3 new = vec3(d+d) * n - lightDir; //weird, I cant do float * float so we use this fix.
     vec3 dotProduct = vec3(dot(normalize(new),eyePos));
-	vec4 spec = specular * vec4(max(pow(dotProduct,vec3(5.0)), vec3(0)),0); //shininess instead of 5.0f
+	vec4 spec = specular * vec4(max(pow(dotProduct,vec3(3.0)), vec3(0)),0); //shininess instead of 5.0f
 
 	color = texture2D(texUnit, TexCoord);
 	amb = color * 0.33;
 
 	vec4 env = textureCube(Sampler, ReflectDir);
 
-	gl_FragColor = (color * intensity) + spec + amb + env; 
+	//gl_FragColor = (color * intensity) + spec + amb + env; 
 	//gl_FragColor = (color * intensity) + spec + env;
+	vec4 fragColor = (color * intensity) + env*spec;
+	fragColor.a = opacity;
+	gl_FragColor = fragColor;
 }
