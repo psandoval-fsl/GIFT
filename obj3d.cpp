@@ -133,7 +133,13 @@ int Obj3d::LoadGLTextures(const aiScene* scene, Obj3d &asset)
 		//save IL image ID
 		std::string filename = (*itr).first;  // get filename
 		(*itr).second = textureIds[i];	  // save texture id for filename in map
-
+		//TODO Horrible hardcoded texture paths
+		if (!filename.compare(0,2,"D:"))
+		{
+			//we have Mustang's hardcoded textures!
+			filename.erase(0,27);
+		}
+		//end of hardcoding
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
@@ -150,7 +156,7 @@ int Obj3d::LoadGLTextures(const aiScene* scene, Obj3d &asset)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),
 				ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE,
 				ilGetData()); 
-			printf("Image loaded: %s, %i out of %i textures\n", filename.c_str(), numTextures, i);
+			printf("Image loaded: %s, %i out of %i textures\n", filename.c_str(), i+1, numTextures);
 		}
 		else 
 			printf("Couldn't load Image: %s\n", filename.c_str());

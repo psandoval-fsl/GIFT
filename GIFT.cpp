@@ -121,8 +121,8 @@ int preRender()
 	translation.x=0; translation.y=-0.3; translation.z=-4;
 	mySceneManager->createScene(rotation, translation, 200, assets); //scene 1
 
-	rotation.x=-25; rotation.y=0; rotation.z=0;
-	translation.x=0; translation.y=-0.3; translation.z=-4;
+	rotation.x=0; rotation.y=0; rotation.z=0;
+	translation.x=0; translation.y=-0.3; translation.z=-5;
 	mySceneManager->createScene(rotation, translation, 10, assets); //scene 2
 
 	mySceneManager->startScene(2);
@@ -196,7 +196,7 @@ int main(int argc, char** argv)
 //	unsigned int fpsEnd = 0;
 //	unsigned int miliseconds = 0;
 	float Xrotation, Yrotation, Zrotation, zoom = 0;
-	assets = new Obj3d(true);
+	assets = new Obj3d(false);
 	int touch;
 
 	EGLinit(eglDisplay, eglSurface);
