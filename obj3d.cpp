@@ -76,7 +76,7 @@ void Obj3d::start(GLuint shaderPrg, const char * path, Obj3d &obj){
 	glEnable( GL_CULL_FACE );
 	glEnable(GL_DEPTH_TEST);
 	glEnable( GL_BLEND );
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Obj3d::set_float4(float f[4], float a, float b, float c, float d)
@@ -318,6 +318,7 @@ void Obj3d::draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc)
 	glUniformMatrix4fv( matPLoc, 1, 0, matP );
 
 	//Renders the car
+
 	recursive_render(matRot, scene->mRootNode, *this);
 
 }
@@ -328,6 +329,7 @@ void Obj3d::draw(float * matMV, float * matP, GLuint matMVLoc, GLuint matPLoc)
 
 void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd, Obj3d &asset)
 {
+	//printf("Entering RecRender--->\n");
 	// Get node transformation matrix
 	struct aiMatrix4x4 m = nd->mTransformation;
 	
@@ -344,6 +346,7 @@ void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd,
 	glUniformMatrix4fv( asset.modelMatrixLoc, 1, 0, m[0] );
 
 	for (unsigned int n=0; n < nd->mNumMeshes; ++n){
+		//printf("-> mesh #%i\n", n);
 		// bind material uniform
 		glUniform4fv( asset.emissiveLoc, 1, asset.myMeshes[nd->mMeshes[n]].matInfo.emissive);
 		glUniform4fv( asset.diffuseLoc, 1, asset.myMeshes[nd->mMeshes[n]].matInfo.diffuse);
@@ -370,7 +373,8 @@ void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd,
 		glVertexAttribPointer(asset.texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
 		glEnableVertexAttribArray(asset.texCoordLoc);
 
-		//if (asset.myMeshes[nd->mMeshes[n]].matInfo.opacity < 1){
+		//if (asset.myMeshes[nd->mMeshes[n]].matInfo.opacity < 0.3){
+		//if (n==3){
 		glDrawElements(GL_TRIANGLES, asset.myMeshes[nd->mMeshes[n]].numFaces*3, GL_UNSIGNED_SHORT, 0); 			
 		//printf("n=%i, op=%f\n",n,asset.myMeshes[nd->mMeshes[n]].matInfo.opacity);
 		//}
@@ -382,19 +386,11 @@ void Obj3d::recursive_render (float * currentTransform, const struct aiNode* nd,
 		glDisableVertexAttribArray(asset.normalLoc);
 		glDisableVertexAttribArray(asset.texCoordLoc);
 	}
-
 	// draw all children
 	for (unsigned int n=0; n < nd->mNumChildren; ++n){
-		if(nd->mNumMeshes>0)
-		{
-			//printf("stored\n");
-			recursive_render(m[0], nd->mChildren[n], asset);
-		} else
-		{
-			//printf("new\n");
-			//float id[16] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
-			recursive_render(m[0], nd->mChildren[n], asset);
-		}
+		//printf("-> launching kid %i RecRender\n", n);
+		recursive_render(m[0], nd->mChildren[n], asset);
 	}
+	//printf("Exiting RecRender--->\n");
 }
 

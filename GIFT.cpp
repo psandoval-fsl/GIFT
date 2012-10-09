@@ -151,7 +151,6 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	//fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
 	//fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
 	//fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
-	
 	assets->draw(matModelView, matProj, viewMatrixLoc, projMatrixLoc);
    
 	// swap buffers
@@ -162,9 +161,9 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 void RenderCleanup(Obj3d *assets)
 {
 	// Clear background.
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   	eglSwapBuffers(eglDisplay, eglSurface);
+//	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//   	eglSwapBuffers(eglDisplay, eglSurface);
 	
 	// free assImp scene resources
 	aiReleaseImport(assets->getScene());
@@ -223,8 +222,12 @@ int main(int argc, char** argv)
 	assets->setCubeHandle(CreateStaticCubemap());
 	sbTxHandle = assets->getCubeHandle();
 
+	aiNode* tmpNd = assets->getScene()->mRootNode->mChildren[4];
+	assets->getScene()->mRootNode->mChildren[4] = assets->getScene()->mRootNode->mChildren[16];
+	assets->getScene()->mRootNode->mChildren[16] = tmpNd;
+	tmpNd = 0;
 	// Main loop
-	//for (int x = 0;x<4;x++)
+	//for (int x = 0;x<1;x++)
 	for (;;)
 	{
 		touch = runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height);
