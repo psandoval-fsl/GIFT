@@ -29,7 +29,7 @@
 							</builder>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1412389730" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
 								<option id="gnu.c.compiler.option.include.paths.1609284463" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/fsl/12.08/ltib/rootfs/usr/include"/>
+									<listOptionValue builtIn="false" value="/home/fsl/12.09/ltib/rootfs/usr/include"/>
 									<listOptionValue builtIn="false" value="/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/default/usr/include"/>
 									<listOptionValue builtIn="false" value="/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include"/>
 								</option>
@@ -41,7 +41,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.2093321300" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="gnu.cpp.compiler.option.include.paths.1972360671" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/fsl/12.08/ltib/rootfs/usr/include"/>
+									<listOptionValue builtIn="false" value="/home/fsl/12.09/ltib/rootfs/usr/include"/>
 									<listOptionValue builtIn="false" value="/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/multi-libs/default/usr/include"/>
 									<listOptionValue builtIn="false" value="/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/lib/gcc/arm-fsl-linux-gnueabi/4.6.2/include"/>
 									<listOptionValue builtIn="false" value="/opt/freescale/usr/local/gcc-4.6.2-glibc-2.13-linaro-multilib-2011.12/fsl-linaro-toolchain/arm-fsl-linux-gnueabi/include/c++/4.6.2/arm-fsl-linux-gnueabi"/>

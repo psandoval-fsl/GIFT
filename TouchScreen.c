@@ -298,7 +298,7 @@ int runTouch(float &Xrot, float &Yrot, float &Zrot, float &Zoom, int width, int 
 		mTouch[0].tap = 0; //tap event consumed, reset it regardless if it's in the monitored area or not.
 	}
 	Xrot = Xrotation;
-	Yrot = Yrotation;
+	Yrot = Yrotation/100;
 	Zrot = Zrotation;
 	Zoom = zoomFactor;
 	return 0;

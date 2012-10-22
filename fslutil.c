@@ -990,7 +990,7 @@ int EGLinit(EGLDisplay &eglDisplay, EGLSurface &eglSurface) {
 	EGLConfig configs[10];
 	EGLint matchingConfigs;
 
-	display = fbGetDisplay(eglContext);
+	display = fbGetDisplayByIndex(0);
 	
 	int w, h, t, l;
 	l=t=0;
@@ -1171,6 +1171,7 @@ void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLu
 				  float *matModelView, float *matProj, GLuint sbPosLoc, GLuint *sbVBO)
 {
 	glDisable(GL_DEPTH_TEST);   // skybox should be drawn behind anything else
+	glDisable( GL_CULL_FACE );
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubehandle);
 	glUseProgram(sbShaderProgram);   
 	glUniformMatrix4fv( sbVMLoc, 1, 0, matModelView );
@@ -1184,6 +1185,7 @@ void renderSkybox(GLuint cubehandle, GLuint sbShaderProgram, GLuint sbVMLoc, GLu
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
 	glDisableVertexAttribArray(sbPosLoc);
 	glEnable(GL_DEPTH_TEST);
+	glEnable( GL_CULL_FACE );
 }
 
 //This function stores the 6 possible angles in radians like this:

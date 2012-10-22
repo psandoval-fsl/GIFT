@@ -127,7 +127,9 @@ int preRender()
 
 	mySceneManager->startScene(2);
 	fslLoadIdentityMatrix4x4 (matModelView);
-	//fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -3.0f); //(0, -2, -10)
+	fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -5.0f); //(0, -2, -10)
+	fslLoadIdentityMatrix4x4 (matSkyBox);
+	fslRotateMatrix4x4(matSkyBox, 180, FSL_Z_AXIS);
 	return 0;
 
 }
@@ -140,16 +142,18 @@ void Render(Obj3d *assets, float Xrot, float Yrot, float Zrot, float zoomtr)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 	//uncomment to draw skybox/cubemap
-	fslLoadIdentityMatrix4x4 (matSkyBox);
-	fslRotateMatrix4x4(matSkyBox, 180, FSL_Z_AXIS);
+//	fslLoadIdentityMatrix4x4 (matSkyBox);
+//	fslRotateMatrix4x4(matSkyBox, 180, FSL_Z_AXIS);
+	fslRotateMatrix4x4 (matSkyBox, -Yrot, FSL_Y_AXIS);
+	//fslRotateMatrix4x4 (matSkyBox, -Xrot, FSL_X_AXIS);
 	renderSkybox(sbTxHandle, g_hSBShaderProgram, sbVMLoc, sbPMLoc,
 			matSkyBox, matProj, sbPosLoc, sbVBO);
 
-	mySceneManager->animate(matModelView);
+	//mySceneManager->animate(matModelView);
 
-	//fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
+	///fslRotateMatrix4x4 (matModelView, -Zrot, FSL_Z_AXIS);
 	//fslRotateMatrix4x4 (matModelView, Xrot, FSL_X_AXIS);
-	//fslRotateMatrix4x4 (matModelView, -Yrot, FSL_Y_AXIS);
+	fslRotateMatrix4x4 (matModelView, Yrot, FSL_Y_AXIS);
 	//fslRotateMatrix4x4 (matModelView, 90, FSL_X_AXIS);
 	assets->draw(matModelView, matProj, viewMatrixLoc, projMatrixLoc);
    
@@ -222,24 +226,29 @@ int main(int argc, char** argv)
 	assets->setCubeHandle(CreateStaticCubemap());
 	sbTxHandle = assets->getCubeHandle();
 
-	aiNode* tmpNd = assets->getScene()->mRootNode->mChildren[4];
-	assets->getScene()->mRootNode->mChildren[4] = assets->getScene()->mRootNode->mChildren[16];
-	assets->getScene()->mRootNode->mChildren[16] = tmpNd;
+	aiNode* tmpNd = assets->getScene()->mRootNode->mChildren[8];
+	assets->getScene()->mRootNode->mChildren[8] = assets->getScene()->mRootNode->mChildren[9];
+	assets->getScene()->mRootNode->mChildren[9] = tmpNd;
 	tmpNd = 0;
 	// Main loop
 	//for (int x = 0;x<1;x++)
 	for (;;)
 	{
 		touch = runTouch(Xrotation, Yrotation, Zrotation, zoom, width, height);
-   		if (1==touch) break;
+   		//if (1==touch) break;
    		if (2==touch){
-   			mySceneManager->startScene(0);
+   			//mySceneManager->startScene(0);
    		}
    		if (3==touch){
-   			mySceneManager->startScene(1);
+   			//mySceneManager->startScene(1);
    		}
    		if (4==touch){
-   			mySceneManager->startScene(2);
+//   			fslLoadIdentityMatrix4x4 (matModelView);
+//   			fslTranslateMatrix4x4 (matModelView, 0, -1.0f, -5.0f); //(0, -2, -10)
+//   			fslLoadIdentityMatrix4x4 (matSkyBox);
+//   			fslRotateMatrix4x4(matSkyBox, 180, FSL_Z_AXIS);
+   			Yrotation = 0;
+   			//mySceneManager->startScene(2);
    		}
 		//fpsStart = fslGetTickCount();
 		Render(assets, Xrotation, Yrotation, Zrotation, zoom);

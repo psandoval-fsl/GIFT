@@ -137,7 +137,13 @@ int Obj3d::LoadGLTextures(const aiScene* scene, Obj3d &asset)
 		if (!filename.compare(0,2,"D:"))
 		{
 			//we have Mustang's hardcoded textures!
-			filename.erase(0,27);
+			if (!filename.compare(4,1,"/"))
+				filename.erase(0,29);
+			if (!filename.compare(4,1,"3"))
+				filename.erase(0,28);
+			if (!filename.compare(4,1,"d"))
+				filename.erase(0,27);
+			//printf("string: %s\n", filename.c_str());
 		}
 		//end of hardcoding
 		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
